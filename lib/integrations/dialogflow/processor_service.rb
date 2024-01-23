@@ -28,7 +28,7 @@ class Integrations::Dialogflow::ProcessorService < Integrations::BotProcessorSer
   end
 
   def process_response(message, response)
-    fulfillment_messages = response.query_result['fulfillment_messages']
+    fulfillment_messages = response.query_result['response_messages']
     fulfillment_messages.each do |fulfillment_message|
       content_params = generate_content_params(fulfillment_message)
       if content_params['action'].present?
@@ -70,11 +70,19 @@ class Integrations::Dialogflow::ProcessorService < Integrations::BotProcessorSer
 
   def detect_intent(session_id, message)
     client = ::Google::Cloud::Dialogflow::CX::V3::Sessions::Client.new
+    query_input = { text: { text: message }, language_code: 'en-US' }
+    client.detect_intent session: session_path(session_id), query_input: query_input
+  end
+
+  def session_path(session_id)
     project_id = hook.settings['project_id']
     location = ENV.fetch('DIALOGFLOW_LOCATION', hook.settings['location'])
     agent = ENV.fetch('DIALOGFLOW_AGENT', hook.settings['agent'])
-    session = "projects/#{project_id}/locations/#{location}/agents/#{agent}/sessions/#{session_id}"
-    query_input = { text: { text: message }, language_code: 'en-US' }
-    client.detect_intent session: session, query_input: query_input
+    path = "projects/#{project_id}/locations/#{location}/agents/#{agent}"
+
+    environment = ENV.fetch('DIALOGFLOW_ENVIRONMENT', hook.settings['environment'])
+    path = "#{path}/environments/#{environment}" if environment.present?
+
+    "#{path}/sessions/#{session_id}"
   end
 end

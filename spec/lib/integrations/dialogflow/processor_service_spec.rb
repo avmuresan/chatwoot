@@ -153,7 +153,7 @@ describe Integrations::Dialogflow::ProcessorService do
     let(:google_dialogflow) { Google::Cloud::Dialogflow::CX::V3::Sessions::Client }
     let(:session_client) { double }
     let(:session) { double }
-    let(:query_input) { { text: { text: message, language_code: 'en-US' } } }
+    let(:query_input) { { text: { text: message }, language_code: 'en-US' } }
     let(:processor) { described_class.new(event_name: event_name, hook: hook, event_data: event_data) }
 
     before do
@@ -165,7 +165,7 @@ describe Integrations::Dialogflow::ProcessorService do
     it 'returns intended response' do
       response = processor.send(:get_response, conversation.contact_inbox.source_id, message.content)
       expect(response[:query_input][:text][:text]).to eq(message)
-      expect(response[:query_input][:text][:language_code]).to eq('en-US')
+      expect(response[:query_input][:language_code]).to eq('en-US')
     end
 
     it 'disables the hook if permission errors are thrown' do

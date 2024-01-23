@@ -76,11 +76,11 @@ class Integrations::Dialogflow::ProcessorService < Integrations::BotProcessorSer
 
   def session_path(session_id)
     project_id = hook.settings['project_id']
-    location = ENV.fetch('DIALOGFLOW_LOCATION', hook.settings['location'])
-    agent = ENV.fetch('DIALOGFLOW_AGENT', hook.settings['agent'])
+    location = ENV.fetch('DIALOGFLOW_LOCATION', hook.settings.dig('credentials', 'location'))
+    agent = ENV.fetch('DIALOGFLOW_AGENT', hook.settings.dig('credentials', 'agent'))
     path = "projects/#{project_id}/locations/#{location}/agents/#{agent}"
 
-    environment = ENV.fetch('DIALOGFLOW_ENVIRONMENT', hook.settings['environment'])
+    environment = ENV.fetch('DIALOGFLOW_ENVIRONMENT', hook.settings.dig('credentials', 'environment'))
     path = "#{path}/environments/#{environment}" if environment.present?
 
     "#{path}/sessions/#{session_id}"

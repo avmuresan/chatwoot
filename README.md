@@ -3,11 +3,11 @@
 
 ___
 
-# Chatwoot 
+# Chatwoot
 
 Customer engagement suite, an open-source alternative to Intercom, Zendesk, Salesforce Service Cloud etc.
 <p>
-  <a href="https://heroku.com/deploy?template=https://github.com/chatwoot/chatwoot/tree/master" alt="Deploy to Heroku">
+  <a href="https://heroku.com/deploy?template=https://github.com/avmuresan/chatwoot/tree/feat/dialogflow_v3_upgrade" alt="Deploy to Heroku">
      <img width="150" alt="Deploy" src="https://www.herokucdn.com/deploy/button.svg"/>
   </a>
   <a href="https://marketplace.digitalocean.com/apps/chatwoot?refcode=f2238426a2a8" alt="Deploy to DigitalOcean">
@@ -84,7 +84,7 @@ If you are looking for a stable version, please use the `master` or tags labelle
 
 Deploying Chatwoot to Heroku is a breeze. It's as simple as clicking this button:
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/chatwoot/chatwoot/tree/master)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/avmuresan/chatwoot/tree/feat/dialogflow_v3_upgrade)
 
 Follow this [link](https://www.chatwoot.com/docs/environment-variables) to understand setting the correct environment variables for the app to work with all the features. There might be breakages if you do not set the relevant environment variables.
 
@@ -99,7 +99,7 @@ Chatwoot now supports 1-Click deployment to DigitalOcean as a kubernetes app.
 
 ### Other deployment options
 
-For other supported options, checkout our [deployment page](https://chatwoot.com/deploy). 
+For other supported options, checkout our [deployment page](https://chatwoot.com/deploy).
 
 ## Security
 

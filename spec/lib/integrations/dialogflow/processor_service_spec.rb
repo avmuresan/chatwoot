@@ -15,7 +15,7 @@ describe Integrations::Dialogflow::ProcessorService do
     let(:dialogflow_service) { double }
     let(:dialogflow_response) do
       ActiveSupport::HashWithIndifferentAccess.new(
-        fulfillment_messages: [
+        response_messages: [
           { text: dialogflow_text_double }
         ]
       )
@@ -69,7 +69,7 @@ describe Integrations::Dialogflow::ProcessorService do
     context 'when dialogflow returns fullfillment text to be empty' do
       let(:dialogflow_response) do
         ActiveSupport::HashWithIndifferentAccess.new(
-          fulfillment_messages: [{ payload: { content: 'hello payload random' } }]
+          response_messages: [{ payload: { content: 'hello payload random' } }]
         )
       end
 
@@ -82,7 +82,7 @@ describe Integrations::Dialogflow::ProcessorService do
     context 'when dialogflow returns action' do
       let(:dialogflow_response) do
         ActiveSupport::HashWithIndifferentAccess.new(
-          fulfillment_messages: [{ payload: { action: 'handoff' } }]
+          response_messages: [{ payload: { action: 'handoff' } }]
         )
       end
 
@@ -95,7 +95,7 @@ describe Integrations::Dialogflow::ProcessorService do
     context 'when dialogflow returns action and messages if available' do
       let(:dialogflow_response) do
         ActiveSupport::HashWithIndifferentAccess.new(
-          fulfillment_messages: [{ payload: { action: 'handoff' } }, { text: dialogflow_text_double }]
+          response_messages: [{ payload: { action: 'handoff' } }, { text: dialogflow_text_double }]
         )
       end
 
@@ -109,7 +109,7 @@ describe Integrations::Dialogflow::ProcessorService do
     context 'when dialogflow returns resolve action' do
       let(:dialogflow_response) do
         ActiveSupport::HashWithIndifferentAccess.new(
-          fulfillment_messages: [{ payload: { action: 'resolve' } }, { text: dialogflow_text_double }]
+          response_messages: [{ payload: { action: 'resolve' } }, { text: dialogflow_text_double }]
         )
       end
 
@@ -150,10 +150,10 @@ describe Integrations::Dialogflow::ProcessorService do
   end
 
   describe '#get_response' do
-    let(:google_dialogflow) { Google::Cloud::Dialogflow::V2::Sessions::Client }
+    let(:google_dialogflow) { Google::Cloud::Dialogflow::CX::V3::Sessions::Client }
     let(:session_client) { double }
     let(:session) { double }
-    let(:query_input) { { text: { text: message, language_code: 'en-US' } } }
+    let(:query_input) { { text: { text: message }, language_code: 'en-US' } }
     let(:processor) { described_class.new(event_name: event_name, hook: hook, event_data: event_data) }
 
     before do
@@ -165,7 +165,7 @@ describe Integrations::Dialogflow::ProcessorService do
     it 'returns intended response' do
       response = processor.send(:get_response, conversation.contact_inbox.source_id, message.content)
       expect(response[:query_input][:text][:text]).to eq(message)
-      expect(response[:query_input][:text][:language_code]).to eq('en-US')
+      expect(response[:query_input][:language_code]).to eq('en-US')
     end
 
     it 'disables the hook if permission errors are thrown' do

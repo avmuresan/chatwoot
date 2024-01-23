@@ -295,7 +295,7 @@ GEM
     google-cloud-core (1.6.0)
       google-cloud-env (~> 1.0)
       google-cloud-errors (~> 1.0)
-    google-cloud-dialogflow-v2 (0.23.0)
+    google-cloud-dialogflow-cx-v3 (0.16.0)
       gapic-common (>= 0.18.0, < 2.a)
       google-cloud-errors (~> 1.0)
       google-cloud-location (>= 0.4, < 2.a)
@@ -877,7 +877,7 @@ DEPENDENCIES
   foreman
   geocoder
   gmail_xoauth
-  google-cloud-dialogflow-v2
+  google-cloud-dialogflow-cx-v3
   google-cloud-storage
   google-cloud-translate-v3
   groupdate

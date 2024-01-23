@@ -15,14 +15,26 @@ class Integrations::Dialogflow::ProcessorService < Integrations::BotProcessorSer
   end
 
   def get_response(session_id, message)
+    Rails.logger.error('#######')
+    Rails.logger.error(hook.settings)
+    Rails.logger.error(hook)
+    Rails.logger.error('#######')
     if hook.settings['credentials'].blank?
       Rails.logger.warn "Account: #{hook.try(:account_id)} Hook: #{hook.id} credentials are not present." && return
     end
 
     configure_dialogflow_client_defaults
-    detect_intent(session_id, message)
+    test = detect_intent(session_id, message)
+    Rails.logger.error('#######')
+    Rails.logger.error(test)
+    Rails.logger.error('#######')
   rescue Google::Cloud::PermissionDeniedError => e
     Rails.logger.warn "DialogFlow Error: (account-#{hook.try(:account_id)}, hook-#{hook.id}) #{e.message}"
+
+    Rails.logger.error('#######')
+    Rails.logger.error('permission DENIED')
+    Rails.logger.error('#######')
+
     hook.prompt_reauthorization!
     hook.disable
   end
@@ -71,6 +83,9 @@ class Integrations::Dialogflow::ProcessorService < Integrations::BotProcessorSer
   def detect_intent(session_id, message)
     client = ::Google::Cloud::Dialogflow::CX::V3::Sessions::Client.new
     session = "projects/#{hook.settings['project_id']}/agent/sessions/#{session_id}"
+    Rails.logger.error('#######')
+    Rails.logger.error(session)
+    Rails.logger.error('#######')
     query_input = { text: { text: message, language_code: 'en-US' } }
     client.detect_intent session: session, query_input: query_input
   end

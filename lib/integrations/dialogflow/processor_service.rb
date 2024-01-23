@@ -1,4 +1,4 @@
-require 'google/cloud/dialogflow/v2'
+require 'google/cloud/dialogflow/cx/v3'
 
 class Integrations::Dialogflow::ProcessorService < Integrations::BotProcessorService
   pattr_initialize [:event_name!, :hook!, :event_data!]
@@ -62,14 +62,14 @@ class Integrations::Dialogflow::ProcessorService < Integrations::BotProcessorSer
   end
 
   def configure_dialogflow_client_defaults
-    ::Google::Cloud::Dialogflow::V2::Sessions::Client.configure do |config|
+    ::Google::Cloud::Dialogflow::CX::V3::Sessions::Client.configure do |config|
       config.timeout = 10.0
       config.credentials = hook.settings['credentials']
     end
   end
 
   def detect_intent(session_id, message)
-    client = ::Google::Cloud::Dialogflow::V2::Sessions::Client.new
+    client = ::Google::Cloud::Dialogflow::CX::V3::Sessions::Client.new
     session = "projects/#{hook.settings['project_id']}/agent/sessions/#{session_id}"
     query_input = { text: { text: message, language_code: 'en-US' } }
     client.detect_intent session: session, query_input: query_input
